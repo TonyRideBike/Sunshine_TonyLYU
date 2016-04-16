@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name" translatable="false">Sunshine</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>
