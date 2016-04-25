@@ -37,7 +37,6 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-
     ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
@@ -48,6 +47,7 @@ public class ForecastFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
+//        new FetchWeatherTask().execute("94043");
     }
 
     @Override
@@ -104,6 +104,7 @@ public class ForecastFragment extends Fragment {
 
         return rootView;
     }
+
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
@@ -196,6 +197,19 @@ public class ForecastFragment extends Fragment {
                 Log.e(LOG_TAG, "Exception: ", e);
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            if (strings == null) {
+                return;
+            }
+
+            mForecastAdapter.clear();
+            for (String str : strings
+                    ) {
+                mForecastAdapter.add(str);
+            }
         }
 
         /**
