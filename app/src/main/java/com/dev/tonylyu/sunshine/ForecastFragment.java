@@ -83,14 +83,14 @@ public class ForecastFragment extends Fragment {
                 "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
                 "Sun 6/29 - Sunny - 20/7"
         };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
+        List<String> weekForecast = new ArrayList<>(Arrays.asList(data));
 
 
         // Now that we have some dummy forecast data, create an ArrayAdapter.
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
         mForecastAdapter =
-                new ArrayAdapter<String>(
+                new ArrayAdapter<>(
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_forecast, // The name of the layout ID.
                         R.id.list_item_forecast_textview, // The ID of the textview to populate.
@@ -105,12 +105,12 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
-    public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
 
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -127,7 +127,7 @@ public class ForecastFragment extends Fragment {
             String post_code = params[0];
             String format = "json";
             String units = "metric";
-            String days = "7";
+            int numDays = 7;
 
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
@@ -137,7 +137,7 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter(QUERY_PARAM, post_code)
                         .appendQueryParameter(FORMAT_PARAM, format)
                         .appendQueryParameter(UNITS_PARAM, units)
-                        .appendQueryParameter(DAYS_PARAM, days)
+                        .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
                         .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
                         .build();
                 URL url = new URL(uri.toString());
@@ -151,7 +151,7 @@ public class ForecastFragment extends Fragment {
 
                 // Read the input stream into a String
                 InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
+                StringBuilder buffer = new StringBuilder();
                 if (inputStream == null) {
                     // Nothing to do.
                     return null;
@@ -171,18 +171,7 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-                Log.d(LOG_TAG, forecastJsonStr.toString());
-
-                try {
-                    JSONArray jsonArray = new JSONObject(forecastJsonStr).getJSONArray("list");
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    jsonObject = jsonObject.getJSONObject("temp");
-                    String data = jsonObject.getString("max");
-
-                    Log.d(LOG_TAG, "data(max): " + data);
-                } catch (Exception e) {
-                    Log.e(LOG_TAG, "Exception: ", e);
-                }
+                Log.d(LOG_TAG, forecastJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
@@ -199,6 +188,12 @@ public class ForecastFragment extends Fragment {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
+            }
+
+            try {
+                return getWeatherDataFromJson(forecastJsonStr, numDays);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, "Exception: ", e);
             }
             return null;
         }
