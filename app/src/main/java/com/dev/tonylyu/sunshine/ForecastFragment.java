@@ -173,9 +173,15 @@ public class ForecastFragment extends Fragment {
                 try {
 
                     JSONArray jsonArray = new JSONObject(forecastJsonStr).getJSONArray("list");
+                    String data = new String();
+                    JSONObject jsonObj = jsonArray.getJSONObject(0);
+                    jsonObj = jsonObj.getJSONObject("temp");
+                    data = jsonObj.getString("min") + "/" + jsonObj.getDouble("max");
+
+                    Log.d(LOG_TAG, data);
                     
                 } catch (Exception e) {
-                    Log.e(LOG_TAG, "Exception: ", e);
+                    Log.e(LOG_TAG, "JSON error: ", e);
                 }
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
