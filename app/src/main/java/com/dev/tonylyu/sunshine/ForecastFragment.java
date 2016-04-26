@@ -170,7 +170,6 @@ public class ForecastFragment extends Fragment {
                     return null;
                 }
                 forecastJsonStr = buffer.toString();
-<<<<<<< HEAD
                 Log.d(LOG_TAG, forecastJsonStr.toString());
 
                 try {
@@ -186,8 +185,7 @@ public class ForecastFragment extends Fragment {
                 } catch (Exception e) {
                     Log.e(LOG_TAG, "JSON error: ", e);
                 }
-=======
->>>>>>> origin/master
+
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error parsing JSON", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
