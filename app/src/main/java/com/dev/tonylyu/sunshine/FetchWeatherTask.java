@@ -101,6 +101,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error parsing JSON", e);
+            e.printStackTrace();
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
