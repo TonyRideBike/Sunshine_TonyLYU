@@ -19,9 +19,13 @@ package com.dev.tonylyu.sunshine;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +33,7 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = DetailActivity.class.getSimpleName();
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, new DetailFragment())
                     .commit();
         }
     }
@@ -69,9 +73,15 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class DetailFragment extends Fragment {
 
-        public PlaceholderFragment() {
+        private static final String SHARE_TEXT_HASHTAG = " #SunshineApp";
+        private String LOG_TAG = DetailFragment.class.getSimpleName();
+        private String mForecastStr;
+        private ShareActionProvider mShareActionProvider;
+
+        public DetailFragment() {
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -79,12 +89,48 @@ public class DetailActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
 
             Intent intent = getActivity().getIntent();
-            String detail_info = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             setHasOptionsMenu(true);
             TextView textView = (TextView) rootView.findViewById(R.id.textview_detail);
-            textView.setText(detail_info);
+            textView.setText(mForecastStr);
             return rootView;
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+            inflater.inflate(R.menu.detailfragment, menu);
+
+            /**
+             * menu.getItem() use index as param
+             * should use findItem() using id as param
+             */
+            MenuItem menuItem = menu.findItem(R.id.action_share);
+
+            /**
+             * interesting MenuItemCompat.
+             */
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            setShareIntent(makeShareIntent(mForecastStr));
+
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+        private void setShareIntent(Intent shareIntent) {
+            if (mShareActionProvider != null) {
+                mShareActionProvider.setShareIntent(shareIntent);
+            } else {
+                Log.e(LOG_TAG, "ShareActionProvider is null?");
+            }
+        }
+
+        private Intent makeShareIntent(String str) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            // TODO: 5/11/2016 do more research on MIME
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, str + SHARE_TEXT_HASHTAG);
+            return shareIntent;
         }
     }
 }
