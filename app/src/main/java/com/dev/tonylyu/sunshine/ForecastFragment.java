@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +22,6 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
-    public static final String EXTRA_BRIEF_FORECAST_INFO = "com.dev.tonylyu.sunshine.brief_forecast";
-
     ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
@@ -40,14 +36,9 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.main, menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.action_refresh) {
 //            new FetchWeatherTask().execute("94043");
             new FetchWeatherTask() {
@@ -57,14 +48,12 @@ public class ForecastFragment extends Fragment {
                         return;
                     }
                     mForecastAdapter.clear();
-                    for (String data:
-                         strings) {
+                    for (String data :
+                            strings) {
                         mForecastAdapter.add(data);
                     }
                 }
             }.execute("94043");
-            return true;
-        } else if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);

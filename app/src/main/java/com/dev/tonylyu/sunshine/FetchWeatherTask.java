@@ -29,7 +29,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
         HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
+        BufferedReader reader;
+        reader = null;
 
         String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
         String QUERY_PARAM = "q";
@@ -83,12 +84,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 return null;
             }
             forecastJsonStr = buffer.toString();
-            Log.d(LOG_TAG, forecastJsonStr.toString());
+            Log.d(LOG_TAG, forecastJsonStr);
 
             try {
 
                 JSONArray jsonArray = new JSONObject(forecastJsonStr).getJSONArray("list");
-                String data = new String();
+                String data;
                 JSONObject jsonObj = jsonArray.getJSONObject(0);
                 jsonObj = jsonObj.getJSONObject("temp");
                 data = jsonObj.getString("min") + "/" + jsonObj.getDouble("max");
@@ -157,8 +158,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
-        String highLowStr = roundedHigh + "/" + roundedLow;
-        return highLowStr;
+        return roundedHigh + "/" + roundedLow;
     }
 
     /**
