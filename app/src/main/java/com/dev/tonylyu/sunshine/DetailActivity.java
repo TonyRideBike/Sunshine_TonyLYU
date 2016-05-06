@@ -82,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
             String detail_info = intent.getStringExtra(Intent.EXTRA_TEXT);
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             setHasOptionsMenu(true);
-            TextView textView = (TextView)rootView.findViewById(R.id.textview_detail);
+            TextView textView = (TextView) rootView.findViewById(R.id.textview_detail);
             textView.setText(detail_info);
             return rootView;
         }
