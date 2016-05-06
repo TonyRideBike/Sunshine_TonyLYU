@@ -2,7 +2,9 @@ package com.dev.tonylyu.sunshine;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,7 +42,12 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-//            new FetchWeatherTask().execute("94043");
+
+            SharedPreferences sharedPreferences = PreferenceManager
+                    .getDefaultSharedPreferences(getActivity());
+            String location_requested = sharedPreferences
+                    .getString(getString(R.string.pref_location_key), null);
+
             new FetchWeatherTask() {
                 @Override
                 protected void onPostExecute(String[] strings) {
@@ -53,7 +60,7 @@ public class ForecastFragment extends Fragment {
                         mForecastAdapter.add(data);
                     }
                 }
-            }.execute("94043");
+            }.execute(location_requested);
             return true;
         }
         return super.onOptionsItemSelected(item);
