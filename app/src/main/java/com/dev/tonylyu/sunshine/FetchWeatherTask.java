@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 
 /**
  * Created by TonyLyu on 16/4/30.
+ *
  */
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
@@ -125,19 +126,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         }
         return null;
     }
-
-//    @Override
-//    protected void onPostExecute(String[] strings) {
-//        if (strings == null) {
-//            return;
-//        }
-//
-//        mForecastAdapter.clear();
-//        for (String str : strings
-//                ) {
-//            mForecastAdapter.add(str);
-//        }
-//    }
 
     /**
      * The date/time conversion code is going to be moved outside the asynctask later,

@@ -16,8 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +32,12 @@ public class ForecastFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
-//        new FetchWeatherTask().execute("94043");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
     }
 
     @Override
@@ -42,25 +45,7 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-
-            SharedPreferences sharedPreferences = PreferenceManager
-                    .getDefaultSharedPreferences(getActivity());
-            String location_requested = sharedPreferences
-                    .getString(getString(R.string.pref_location_key), null);
-
-            new FetchWeatherTask() {
-                @Override
-                protected void onPostExecute(String[] strings) {
-                    if (strings == null) {
-                        return;
-                    }
-                    mForecastAdapter.clear();
-                    for (String data :
-                            strings) {
-                        mForecastAdapter.add(data);
-                    }
-                }
-            }.execute(location_requested);
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -70,19 +55,6 @@ public class ForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] mockData = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-        List<String> mockWeekForecast = new ArrayList<>(Arrays.asList(mockData));
-
-
         // Now that we have some dummy forecast data, create an ArrayAdapter.
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
@@ -91,12 +63,12 @@ public class ForecastFragment extends Fragment {
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_forecast, // The name of the layout ID.
                         R.id.list_item_forecast_textview, // The ID of the textview to populate.
-                        mockWeekForecast);
+                        new ArrayList<String>());
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
         listView.setAdapter(mForecastAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,5 +81,27 @@ public class ForecastFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void updateWeather() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask() {
+            @Override
+            protected void onPostExecute(String[] strings) {
+                if (strings == null) {
+                    return;
+                }
+                mForecastAdapter.clear();
+                for (String data :
+                        strings) {
+                    mForecastAdapter.add(data);
+                }
+            }
+        };
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPreferences.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        weatherTask.execute(location);
     }
 }
