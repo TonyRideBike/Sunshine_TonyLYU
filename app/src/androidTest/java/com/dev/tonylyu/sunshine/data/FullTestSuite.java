@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dev.tonylyu.sunshine;
+package com.dev.tonylyu.sunshine.data;
 
 import android.test.suitebuilder.TestSuiteBuilder;
 
