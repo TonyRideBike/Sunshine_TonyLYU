@@ -134,7 +134,7 @@ public class WeatherContract {
 
         //// TODO: 16/6/10 fill in this buildWeatherLocation function
         public static Uri buildWeatherLocation(String locationSetting) {
-            return null;
+            return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
         }
 
         public static Uri buildWeatherLocationWithStartDate(
