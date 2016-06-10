@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="action_settings">设置</string>
+    <string name="pref_unit_label_imperial">华氏度</string>
+    <string name="pref_unit_label_metric">摄氏度</string>
+    <string name="pref_unit_label">温度单位</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="action_open_map">打开地图</string>
+    <string name="action_refresh">刷新</string>
 </resources>
