@@ -29,6 +29,10 @@
         <activity android:name=".SettingsActivity">
 
         </activity>
+
+        <provider
+            android:name=".data.WeatherProvider"
+            android:authorities="com.dev.tonylyu.sunshine" />
     </application>
 
 </manifest>
