@@ -250,25 +250,21 @@ public class WeatherProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         int returnId;
 
+
         // Student: A null value deletes all rows.  In my implementation of this, I only notified
         // the uri listeners (using the content resolver) if the rowsDeleted != 0 or the selection
         // is null.
         // Oh, and you should notify the listeners here.
+        if (selection == null) selection = "1";
         switch (match) {
             case WEATHER: {
                 returnId = db.delete(
-                        WeatherContract.WeatherEntry.TABLE_NAME,
-                        selection,
-                        selectionArgs
-                );
+                        WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
             case LOCATION: {
                 returnId = db.delete(
-                        WeatherContract.LocationEntry.TABLE_NAME,
-                        selection,
-                        selectionArgs
-                );
+                        WeatherContract.LocationEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
             default:
@@ -322,7 +318,7 @@ public class WeatherProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException();
         }
-        if (returnId > 0) {
+        if (returnId != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return returnId;
