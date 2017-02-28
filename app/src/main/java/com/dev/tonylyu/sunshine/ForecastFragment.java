@@ -142,7 +142,7 @@ public class ForecastFragment extends Fragment {
             String post_code = params[0];
             String format = "json";
             String units = "metric";
-            int numDays = 7;
+            int numDays = 15;
 
             // Will contain the raw JSON response as a string.
             String forecastJsonStr = null;
