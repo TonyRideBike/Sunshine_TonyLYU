@@ -42,7 +42,6 @@ Thumbs.db
 .idea
 
 # .idea/workspace.xml
-
 .gradle
 build/
 
@@ -52,3 +51,6 @@ obj/
 Sunshine-Version-2-assets.zip
 
 Sunshine_Visual_Mocks_ALL.pdf
+
+app.iml
+gradle.properties
