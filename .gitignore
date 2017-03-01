@@ -1,4 +1,3 @@
-.gitignore
 # apply from StackOverflow
 # http://stackoverflow.com/questions/16736856/what-should-be-in-my-gitignore-for-an-android-studio-project
 
@@ -55,3 +54,6 @@ Sunshine_Visual_Mocks_ALL.pdf
 
 app.iml
 gradle.properties
+/build.gradle
+libs/
+src/main/res/drawable/
