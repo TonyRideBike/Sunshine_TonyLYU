@@ -275,7 +275,7 @@ public class WeatherProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
 
-        // Student: return the actual rows deleted
+        // Student: return thactuale  rows deleted
         return returnId;
     }
 

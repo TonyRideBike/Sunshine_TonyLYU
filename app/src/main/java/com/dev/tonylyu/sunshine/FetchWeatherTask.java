@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -49,9 +50,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     private ArrayAdapter<String> mForecastAdapter;
     private boolean DEBUG = BuildConfig.DEBUG;
 
-    public FetchWeatherTask(Context context, ArrayAdapter<String> forecastAdapter) {
-        mContext = context;
-        mForecastAdapter = forecastAdapter;
+    public FetchWeatherTask(FragmentActivity activity, ArrayAdapter<String> mForecastAdapter) {
+        mContext = activity;
+        this.mForecastAdapter = mForecastAdapter;
     }
 
     /**
