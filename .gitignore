@@ -54,6 +54,9 @@ Sunshine_Visual_Mocks_ALL.pdf
 
 app.iml
 gradle.properties
-/build.gradle
 libs/
 src/main/res/drawable/
+.gitignore~
+app/build.gradle
+app/src/main/res/drawable/
+projectFilesBackup/
