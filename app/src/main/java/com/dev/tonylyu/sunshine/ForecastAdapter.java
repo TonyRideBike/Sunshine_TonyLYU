@@ -1,7 +1,8 @@
 package com.dev.tonylyu.sunshine;
 
 /**
- * Created by antho on 2017/3/8.
+ * Created by tony lyu on 2017/3/8.
+ * Learn to use Loader.
  */
 
 import android.content.Context;
