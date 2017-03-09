@@ -44,7 +44,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
     private final Context mContext;
     //    private ArrayAdapter<String> mForecastAdapter;
-    private boolean DEBUG = BuildConfig.DEBUG;
 
     //    public FetchWeatherTask(Context context, ArrayAdapter<String> adapter) {
 //        mContext = context;
@@ -123,8 +122,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 locationIDIndex = cursor.getColumnIndex(WeatherContract.LocationEntry._ID);
                 locationID = cursor.getLong(locationIDIndex);
 
-                Log.d("addLocation", "Location found: " + cityName + ", " + locationSetting);
+                if (BuildConfig.DEBUG) {
+                    Log.d("addLocation", "Location found: " + cityName + ", " + locationSetting);
+                }
             } else {
+                if (BuildConfig.DEBUG) {
+                    Log.d(LOG_TAG, "New location: " + cityName);
+                }
                 ContentValues locationValues = new ContentValues();
 
                 locationValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
@@ -408,12 +412,12 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 }
             }
         }
-//        try {
-//            return getWeatherDataFromJson(forecastJSONstr, locationQuery);
-//        } catch (JSONException e) {
-//            Log.e(LOG_TAG, e.getMessage(), e);
-//            e.printStackTrace();
-//        }
+        try {
+            getWeatherDataFromJson(forecastJSONstr, locationQuery);
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
+        }
 
         return null;
     }
