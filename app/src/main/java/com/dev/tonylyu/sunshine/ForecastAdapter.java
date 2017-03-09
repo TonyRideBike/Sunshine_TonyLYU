@@ -20,6 +20,8 @@ import com.dev.tonylyu.sunshine.data.WeatherContract;
  * from a {@link android.database.Cursor} to a {@link android.widget.ListView}.
  */
 public class ForecastAdapter extends CursorAdapter {
+
+    private final String LOG_TAG = ForecastAdapter.class.getSimpleName();
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
