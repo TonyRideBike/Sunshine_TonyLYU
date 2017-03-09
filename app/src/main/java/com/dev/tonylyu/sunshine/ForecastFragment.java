@@ -118,6 +118,13 @@ public class ForecastFragment extends Fragment implements
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
         String location = Utility.getPreferredLocation(getActivity());
 
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "updateWeather Start.");
+        }
+
+        FetchWeatherTask weatherTask = new FetchWeatherTask(getContext());
+        String location = Utility.getPreferredLocation(getContext());
+
         weatherTask.execute(location);
     }
 
