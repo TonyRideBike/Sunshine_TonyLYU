@@ -27,6 +27,7 @@ public class ForecastFragment extends Fragment implements
     private static final int WEATHER_LOADER_ID = 101;
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private ForecastAdapter mForecastAdapter;
+    private CursorLoader mCursorLoader;
 
     public ForecastFragment() {
         // Required empty public constructor
@@ -86,6 +87,11 @@ public class ForecastFragment extends Fragment implements
         String location = Utility.getPreferredLocation(getActivity());
 
         weatherTask.execute(location);
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                location, System.currentTimeMillis()
+        );
+        mCursorLoader.setUri(weatherForLocationUri);
+//        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
     }
 
     /**
@@ -97,28 +103,38 @@ public class ForecastFragment extends Fragment implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "onCreateLoader");
+        }
         String locationSetting = Utility.getPreferredLocation(getContext());
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                 locationSetting, System.currentTimeMillis()
         );
 
-        return new CursorLoader(getContext(),
+        mCursorLoader = new CursorLoader(getContext(),
                 weatherForLocationUri,
                 null,
                 null,
                 null,
                 sortOrder
         );
+        return mCursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "onLoadFinished");
+        }
         mForecastAdapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "onLoaderReset");
+        }
         mForecastAdapter.swapCursor(null);
     }
 
