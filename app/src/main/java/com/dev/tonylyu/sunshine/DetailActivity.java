@@ -117,15 +117,25 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-
-            Intent intent = getActivity().getIntent();
-            mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "onCreateView");
+            }
             setHasOptionsMenu(true);
+            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            Intent intent = getActivity().getIntent();
+            if (null == intent) {
+                if (BuildConfig.DEBUG) {
+                    Log.d(LOG_TAG, " intent null?");
+                }
+                return rootView;
+            }
+            mForecastStr = intent.getDataString();
+//            mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
             TextView textView = (TextView) rootView.findViewById(R.id.textview_detail);
             if (null != mForecastStr) {
                 textView.setText(mForecastStr);
             }
+
             return rootView;
         }
 
