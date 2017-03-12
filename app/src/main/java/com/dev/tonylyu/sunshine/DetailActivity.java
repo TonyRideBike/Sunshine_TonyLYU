@@ -123,7 +123,9 @@ public class DetailActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             setHasOptionsMenu(true);
             TextView textView = (TextView) rootView.findViewById(R.id.textview_detail);
-            textView.setText(mForecastStr);
+            if (null != mForecastStr) {
+                textView.setText(mForecastStr);
+            }
             return rootView;
         }
 
