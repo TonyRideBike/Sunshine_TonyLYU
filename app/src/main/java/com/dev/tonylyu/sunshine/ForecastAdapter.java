@@ -1,13 +1,14 @@
 package com.dev.tonylyu.sunshine;
 
-/**
- * Created by tony lyu on 2017/3/8.
- * Learn to use Loader.
+/*
+  Created by tony lyu on 2017/3/8.
+  Learn to use Loader.
  */
 
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,11 @@ import android.widget.TextView;
  * {@link ForecastAdapter} exposes a list of weather forecasts
  * from a {@link android.database.Cursor} to a {@link android.widget.ListView}.
  */
-public class ForecastAdapter extends CursorAdapter {
+class ForecastAdapter extends CursorAdapter {
 
     private final String LOG_TAG = ForecastAdapter.class.getSimpleName();
-    public ForecastAdapter(Context context, Cursor c, int flags) {
+
+    ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
@@ -29,8 +31,7 @@ public class ForecastAdapter extends CursorAdapter {
      */
     private String formatHighLows(double high, double low) {
         boolean isMetric = Utility.isMetric(mContext);
-        String highLowStr = Utility.formatTemperature(high, isMetric) + "/" + Utility.formatTemperature(low, isMetric);
-        return highLowStr;
+        return Utility.formatTemperature(high, isMetric) + "/" + Utility.formatTemperature(low, isMetric);
     }
 
     /*
@@ -58,9 +59,11 @@ public class ForecastAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "newView");
+        }
 
-        return view;
+        return LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
     }
 
     /*
@@ -70,6 +73,10 @@ public class ForecastAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
+
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "bindView");
+        }
 
         TextView tv = (TextView) view;
         tv.setText(convertCursorRowToUXFormat(cursor));

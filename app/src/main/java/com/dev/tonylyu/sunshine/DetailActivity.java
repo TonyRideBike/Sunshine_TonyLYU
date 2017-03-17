@@ -159,9 +159,8 @@ public class DetailActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "onCreateView");
             }
             setHasOptionsMenu(true);
-            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-            return rootView;
+            return inflater.inflate(R.layout.fragment_detail, container, false);
         }
 
         @Override
@@ -169,14 +168,14 @@ public class DetailActivity extends AppCompatActivity {
 
             inflater.inflate(R.menu.detailfragment, menu);
 
-            /**
-             * menu.getItem() use index as param
-             * should use findItem() using id as param
+            /*
+              menu.getItem() use index as param
+              should use findItem() using id as param
              */
             MenuItem menuItem = menu.findItem(R.id.action_share);
 
-            /**
-             * interesting MenuItemCompat.
+            /*
+              interesting MenuItemCompat.
              */
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
             setShareIntent(makeShareIntent());

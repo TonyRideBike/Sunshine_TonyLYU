@@ -40,7 +40,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
-public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
     private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
     private final Context mContext;
     //    private ArrayAdapter<String> mForecastAdapter;
@@ -49,7 +49,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 //        mContext = context;
 //        this.mForecastAdapter = adapter;
 //    }
-    public FetchWeatherTask(Context context) {
+    FetchWeatherTask(Context context) {
         mContext = context;
     }
 
@@ -382,7 +382,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             connection.connect();
 
             InputStream inputStream = connection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             if (inputStream == null) {
                 return null;
             }
@@ -390,7 +390,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
+                buffer.append(line).append("\n");
             }
             if (buffer.length() == 0) {
                 return null;
