@@ -188,4 +188,9 @@ public class ForecastFragment extends Fragment implements
         mForecastAdapter.swapCursor(null);
     }
 
+    public void onLocationChanged() {
+        updateWeather();
+        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
+    }
+
 }

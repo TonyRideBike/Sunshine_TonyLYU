@@ -10,9 +10,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String FORECASTFRAGMENT_TAG = "ForecastFragment_tag";
+    private String mLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +24,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
+        mLocation = PreferenceManager.getDefaultSharedPreferences(this).getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default)
+        );
+    }
+
+    @Override
+    protected void onResume() {
+        if (!Objects.equals(mLocation, Utility.getPreferredLocation(this))) {
+            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().findFragmentByTag(
+                    FORECASTFRAGMENT_TAG
+            );
+            ff.onLocationChanged();
+            mLocation = Utility.getPreferredLocation(this);
+        }
+        super.onResume();
     }
 
     @Override
