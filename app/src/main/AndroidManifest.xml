@@ -32,7 +32,16 @@
 
         <provider
             android:name=".data.WeatherProvider"
-            android:authorities="com.dev.tonylyu.sunshine" />
+            android:authorities="com.dev.tonylyu.sunshine"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.dev.tonylyu.permission" />
     </application>
+    <permission
+        android:name="com.dev.tonylyu.permission"
+        android:label="Licenced to Kill"
+        android:protectionLevel="dangerous">
+
+    </permission>
 
 </manifest>
