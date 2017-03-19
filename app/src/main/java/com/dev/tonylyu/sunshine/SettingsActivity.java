@@ -5,6 +5,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
@@ -16,6 +17,7 @@ import android.preference.PreferenceManager;
  */
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
+    private static final String LOG_TAG = SettingsActivity.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,10 @@ public class SettingsActivity extends PreferenceActivity
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "onPreferenceChange");
+        }
+
         String stringValue = value.toString();
 
         if (preference instanceof ListPreference) {

@@ -158,6 +158,7 @@ public class DetailActivity extends AppCompatActivity {
             if (BuildConfig.DEBUG) {
                 Log.d(LOG_TAG, "onCreateView");
             }
+
             setHasOptionsMenu(true);
 
             return inflater.inflate(R.layout.fragment_detail, container, false);
@@ -165,6 +166,9 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "onCreateOptionsMenu");
+            }
 
             inflater.inflate(R.menu.detailfragment, menu);
 
@@ -184,6 +188,10 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         private void setShareIntent(Intent shareIntent) {
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "setShareIntent");
+            }
+
             if (mShareActionProvider != null) {
                 mShareActionProvider.setShareIntent(shareIntent);
             } else {
@@ -202,12 +210,20 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "onActivityCreated");
+            }
+
             getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             super.onActivityCreated(savedInstanceState);
         }
 
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "onCreateLoader");
+            }
+
             Intent intent = getActivity().getIntent();
             if (null == intent) {
                 return null;
@@ -226,6 +242,10 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "onLoadFinished");
+            }
+
             TextView textView = (TextView) getActivity().findViewById(R.id.textview_detail);
 
             if (!data.moveToFirst()) {
@@ -248,6 +268,9 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
+            if (BuildConfig.DEBUG) {
+                Log.d(LOG_TAG, "onLoaderReset");
+            }
 
         }
     }

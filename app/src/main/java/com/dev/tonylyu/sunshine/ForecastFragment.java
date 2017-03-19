@@ -189,6 +189,9 @@ public class ForecastFragment extends Fragment implements
     }
 
     public void onLocationChanged() {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "onLocationChanged");
+        }
         updateWeather();
         getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
     }
