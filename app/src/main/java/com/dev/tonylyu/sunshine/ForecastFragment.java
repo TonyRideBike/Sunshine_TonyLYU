@@ -130,7 +130,7 @@ public class ForecastFragment extends Fragment implements
     private void updateWeather() {
 
         if (BuildConfig.DEBUG) {
-            Log.d(LOG_TAG, "updateWeather Start.");
+            Log.d(LOG_TAG, "updateWeather Start.", new Exception());
         }
 
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
@@ -193,7 +193,7 @@ public class ForecastFragment extends Fragment implements
             Log.d(LOG_TAG, "onLocationChanged");
         }
         updateWeather();
-        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
+//        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
     }
 
 }
