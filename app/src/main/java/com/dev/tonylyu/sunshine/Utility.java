@@ -23,11 +23,15 @@ package com.dev.tonylyu.sunshine;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.format.Time;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 class Utility {
+    public static final String DATE_FORMAT = "yyyyMMdd";
+
     static String getPreferredLocation(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.pref_location_key),
@@ -54,5 +58,40 @@ class Utility {
     static String formatDate(long dateInMillis) {
         Date date = new Date(dateInMillis);
         return DateFormat.getDateInstance().format(date);
+    }
+
+    static String getFriendlyDateString(Context context, long dateMills) {
+        Time time = new Time();
+        time.setToNow();
+
+        int julianDay = Time.getJulianDay(dateMills, time.gmtoff);
+        int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), time.gmtoff);
+
+        if (currentJulianDay == julianDay) {
+            // return today
+            String today = context.getString(R.string.today);
+            int formatID = R.string.format_full_friendly_date;
+            return context.getString(formatID, today, getFormattedMonthDay(context, dateMills));
+        } else if (currentJulianDay + 1 == julianDay) {
+            // return tomorrow
+            return context.getString(R.string.tomorrow);
+        } else if (currentJulianDay + 7 > julianDay) {
+            // return week day
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+            return dayFormat.format(dateMills);
+        } else {
+            // return date
+            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE MMM dd");
+            return shorthenDateFormat.format(dateMills);
+        }
+    }
+
+    private static String getFormattedMonthDay(Context context, long dateMills) {
+        Time time = new Time();
+        time.setToNow();
+
+        SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
+        return monthDayFormat.format(dateMills);
     }
 }
