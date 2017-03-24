@@ -10,5 +10,6 @@
     <string name="pref_location_label">位置</string>
     <string name="title_activity_detail">详细</string>
     <string name="action_share">分享</string>
-    <string name="app_name" translatable="false">Sunshine</string>
+    <string name="today">今天</string>
+    <string name="tomorrow">明天</string>
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sunshine</string>
     <string name="action_open_map">Ouvrir la carte</string>
     <string name="action_refresh">Rafraîchir</string>
     <string name="action_settings">Paramètres</string>
@@ -10,5 +9,5 @@
     <string name="pref_unit_label_imperial">Fahrenheit</string>
     <string name="pref_unit_label_metric">Celsius</string>
     <string name="title_activity_detail">En détail</string>
-    <string name="title_activity_settings">En détail</string>
+    <string name="title_activity_settings">Paramètres</string>
 </resources>
