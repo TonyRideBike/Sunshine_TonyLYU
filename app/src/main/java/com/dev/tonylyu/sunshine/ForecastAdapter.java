@@ -22,6 +22,8 @@ import android.widget.TextView;
 class ForecastAdapter extends CursorAdapter {
 
     private final String LOG_TAG = ForecastAdapter.class.getSimpleName();
+    private final int VIEW_TYPE_TODAY = 0;
+    private final int VIEW_TYPE_FUTURE = 1;
 
     ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -63,13 +65,33 @@ class ForecastAdapter extends CursorAdapter {
         if (BuildConfig.DEBUG) {
             Log.d(LOG_TAG, "newView");
         }
+        int viewType = getItemViewType(cursor.getPosition());
+        int layoutID = -1;
+        switch (viewType) {
+            case VIEW_TYPE_TODAY:
+                layoutID = R.layout.list_item_forecast_today;
+                break;
+            case VIEW_TYPE_FUTURE:
+                layoutID = R.layout.list_item_forecast;
+                break;
+        }
 
-        return LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
+        return LayoutInflater.from(context).inflate(layoutID, parent, false);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
     }
 
     /*
-        This is where we fill-in the views with the contents of the cursor.
-     */
+                This is where we fill-in the views with the contents of the cursor.
+             */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         // our view is pretty simple here --- just a text view

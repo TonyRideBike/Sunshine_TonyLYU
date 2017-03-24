@@ -81,7 +81,7 @@ class Utility {
             return dayFormat.format(dateMills);
         } else {
             // return date
-            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE MMM dd");
+            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE MMMM dd");
             return shorthenDateFormat.format(dateMills);
         }
     }
