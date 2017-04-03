@@ -28,6 +28,7 @@ import android.text.format.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 class Utility {
     public static final String DATE_FORMAT = "yyyyMMdd";
@@ -70,21 +71,36 @@ class Utility {
 
         if (currentJulianDay == julianDay) {
             // return today
-            String today = context.getString(R.string.today);
+            String today = getDayName(context, dateMills);
             int formatID = R.string.format_full_friendly_date;
             return context.getString(formatID, today, getFormattedMonthDay(context, dateMills));
-        } else if (currentJulianDay + 1 == julianDay) {
-            // return tomorrow
-            return context.getString(R.string.tomorrow);
         } else if (currentJulianDay + 7 > julianDay) {
             // return week day
-            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
-            return dayFormat.format(dateMills);
+            return getDayName(context, dateMills);
         } else {
             // return date
-            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE MMMM dd");
+            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE, MMMM d");
             return shorthenDateFormat.format(dateMills);
         }
+    }
+
+    static String getDayName(Context context, long dateMills) {
+        String dayName;
+        Time time = new Time();
+        time.setToNow();
+
+        int julianDay = Time.getJulianDay(dateMills, time.gmtoff);
+        int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), time.gmtoff);
+
+        if (julianDay == currentJulianDay) {
+            dayName = context.getString(R.string.today);
+        } else if (julianDay == currentJulianDay + 1) {
+            dayName = context.getString(R.string.tomorrow);
+        } else {
+            SimpleDateFormat weekDayName = new SimpleDateFormat("EEEE", Locale.getDefault());
+            dayName = weekDayName.format(dateMills);
+        }
+        return dayName;
     }
 
     private static String getFormattedMonthDay(Context context, long dateMills) {
@@ -92,7 +108,29 @@ class Utility {
         time.setToNow();
 
         SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
-        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM d");
         return monthDayFormat.format(dateMills);
     }
+
+    static String getDirection(float degree) {
+        if (degree >= 337.5 || degree < 22.5) {
+            return "N";
+        } else if (degree >= 22.5 && degree < 67.5) {
+            return "NE";
+        } else if (degree >= 67.5 && degree < 122.5) {
+            return "E";
+        } else if (degree >= 122.5 && degree < 157.5) {
+            return "SE";
+        } else if (degree >= 157.5 && degree < 202.5) {
+            return "S";
+        } else if (degree >= 202.5 && degree < 247.5) {
+            return "SW";
+        } else if (degree >= 247.5 && degree < 292.5) {
+            return "W";
+        } else if (degree >= 292.5 && degree < 337.5) {
+            return "NW";
+        } else return "ERROR";
+    }
+
+
 }
