@@ -74,10 +74,20 @@ class ForecastAdapter extends CursorAdapter {
         // we'll keep the UI functional with a simple (and slow!) binding.
 
         // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
         // Use placeholder image for now
         ForecastViewHolder viewHolder = (ForecastViewHolder) view.getTag();
-        viewHolder.weatherIconImageView.setImageResource(R.drawable.ic_clear);
+
+        if (0 == cursor.getPosition()) {
+            viewHolder.weatherIconImageView.setImageResource(
+                    Utility.getArtResourceForWeatherCondition(weatherId)
+            );
+        } else {
+            viewHolder.weatherIconImageView.setImageDrawable(context.getDrawable(
+                    Utility.getIconResourceForWeatherCondition(weatherId)
+                    )
+            );
+        }
 
         long dateMills = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         viewHolder.dateTextView.setText(Utility.getFriendlyDateString(context, dateMills));
@@ -101,14 +111,14 @@ class ForecastAdapter extends CursorAdapter {
      * Cache of the children views for a forecast list item.
      */
 
-    static class ForecastViewHolder {
+    private static class ForecastViewHolder {
         final ImageView weatherIconImageView;
         final TextView weatherDescTextView;
         final TextView dateTextView;
         final TextView highTempTextView;
         final TextView lowTempTextView;
 
-        public ForecastViewHolder(View view) {
+        ForecastViewHolder(View view) {
             this.weatherIconImageView = (ImageView) view.findViewById(R.id.list_item_icon);
             this.weatherDescTextView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
             this.dateTextView = (TextView) view.findViewById(R.id.list_item_date_textview);

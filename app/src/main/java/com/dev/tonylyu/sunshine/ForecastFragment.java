@@ -130,7 +130,7 @@ public class ForecastFragment extends Fragment implements
     private void updateWeather() {
 
         if (BuildConfig.DEBUG) {
-            Log.d(LOG_TAG, "updateWeather Start.", new Exception());
+            Log.d(LOG_TAG, "updateWeather Start.");
         }
 
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
@@ -140,6 +140,7 @@ public class ForecastFragment extends Fragment implements
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
                 location, System.currentTimeMillis()
         );
+
         mCursorLoader.setUri(weatherForLocationUri);
 //        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
     }
