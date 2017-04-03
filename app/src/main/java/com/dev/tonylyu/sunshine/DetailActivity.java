@@ -255,9 +255,12 @@ public class DetailActivity extends AppCompatActivity {
             String dateString = Utility.formatDate(data.getLong(DetailFragment.COL_WEATHER_DATE));
             String weatherDescription = data.getString(DetailFragment.COL_WEATHER_DESC);
             boolean isMetric = Utility.isMetric(getActivity());
-            String tempHigh = Utility.formatTemperature(data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
-            String tempLow = Utility.formatTemperature(data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
-            mForecastStr = String.format("%s - %s -%s/%s", dateString, weatherDescription, tempHigh, tempLow);
+            String tempHigh = Utility.formatTemperature(getContext(),
+                    data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+            String tempLow = Utility.formatTemperature(getContext(),
+                    data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
+            mForecastStr = String.format("%s - %s -%s/%s", dateString, weatherDescription,
+                    tempHigh, tempLow);
 
             textView.setText(mForecastStr);
 
