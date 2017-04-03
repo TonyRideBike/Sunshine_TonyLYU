@@ -79,7 +79,7 @@ class Utility {
             return getDayName(context, dateMills);
         } else {
             // return date
-            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE, MMMM d");
+            SimpleDateFormat shorthenDateFormat = new SimpleDateFormat("EEEE, MMMM d", Locale.getDefault());
             return shorthenDateFormat.format(dateMills);
         }
     }
@@ -107,8 +107,8 @@ class Utility {
         Time time = new Time();
         time.setToNow();
 
-        SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
-        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM d");
+        SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM d", Locale.getDefault());
         return monthDayFormat.format(dateMills);
     }
 

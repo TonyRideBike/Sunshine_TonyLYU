@@ -3,6 +3,10 @@
     package="com.dev.tonylyu.sunshine">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <permission
+        android:name="com.dev.tonylyu.permission"
+        android:label="Licenced to Kill"
+        android:protectionLevel="dangerous"></permission>
 
     <application
         android:allowBackup="true"
@@ -37,11 +41,5 @@
             android:exported="true"
             android:permission="com.dev.tonylyu.permission" />
     </application>
-    <permission
-        android:name="com.dev.tonylyu.permission"
-        android:label="Licenced to Kill"
-        android:protectionLevel="dangerous">
-
-    </permission>
 
 </manifest>
