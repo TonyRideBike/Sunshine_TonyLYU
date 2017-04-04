@@ -139,7 +139,7 @@ class Utility {
      * @param weatherId from OpenWeatherMap API response
      * @return resource id for the corresponding icon. -1 if no relation is found.
      */
-    public static int getIconResourceForWeatherCondition(int weatherId) {
+    static int getIconResourceForWeatherCondition(int weatherId) {
         // Based on weather code data found at:
         // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
         if (weatherId >= 200 && weatherId <= 232) {
@@ -175,7 +175,7 @@ class Utility {
      * @param weatherId from OpenWeatherMap API response
      * @return resource id for the corresponding image. -1 if no relation is found.
      */
-    public static int getArtResourceForWeatherCondition(int weatherId) {
+    static int getArtResourceForWeatherCondition(int weatherId) {
         // Based on weather code data found at:
         // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
         if (weatherId >= 200 && weatherId <= 232) {

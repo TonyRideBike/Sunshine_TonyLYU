@@ -141,8 +141,13 @@ public class ForecastFragment extends Fragment implements
                 location, System.currentTimeMillis()
         );
 
+        if (mCursorLoader == null) {
+            Log.e(LOG_TAG, "mCursorLoader == NULL ???");
+            getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
+            Log.e(LOG_TAG, Boolean.toString(mCursorLoader == null));
+        }
+
         mCursorLoader.setUri(weatherForLocationUri);
-//        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
     }
 
     /**

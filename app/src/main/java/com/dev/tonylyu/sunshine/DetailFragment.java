@@ -42,8 +42,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final int COL_WEATHER_CONDITION_ID = 9;
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private static final String SHARE_TEXT_HASHTAG = " #SunshineApp";
-    private static final int DETAIL_LOADER = 0;
-    private static final int WEATHER_LOADER_ID = 101;
+    private static final int DETAIL_LOADER = 102;
 
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -168,7 +167,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         Intent intent = getActivity().getIntent();
-        if (null == intent) {
+        if (null == intent || null == intent.getData()) {
             return null;
         }
 
@@ -187,11 +186,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (BuildConfig.DEBUG) {
             Log.d(LOG_TAG, "onLoadFinished");
-            Log.d(LOG_TAG, "data good?" + data.toString());
         }
 
         if (!data.moveToFirst()) {
-            Log.d(LOG_TAG, "cursor data error" + data.toString());
+            Log.d(LOG_TAG, "cursor error" + data.toString());
             return;
         }
 
