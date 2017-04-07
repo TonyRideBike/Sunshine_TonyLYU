@@ -1,6 +1,7 @@
 package com.dev.tonylyu.sunshine;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -58,9 +59,20 @@ public class ForecastFragment extends Fragment implements
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private ForecastAdapter mForecastAdapter;
     private CursorLoader mCursorLoader;
+    private Callback mCallbackListener;
 
     public ForecastFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallbackListener = (ForecastFragment.Callback) context;
+        } catch (ClassCastException e) {
+            Log.e(LOG_TAG, context.toString() + " must implement OnArticleSelectedListener", e);
+        }
     }
 
     @Override
@@ -113,6 +125,7 @@ public class ForecastFragment extends Fragment implements
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
                     Intent intent = new Intent(getActivity(), DetailActivity.class)
@@ -200,6 +213,19 @@ public class ForecastFragment extends Fragment implements
         }
         updateWeather();
 //        getLoaderManager().restartLoader(WEATHER_LOADER_ID, null, this);
+    }
+
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(Uri dateUri);
     }
 
 }
