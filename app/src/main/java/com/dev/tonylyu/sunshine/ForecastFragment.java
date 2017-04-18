@@ -2,7 +2,6 @@ package com.dev.tonylyu.sunshine;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,7 +58,7 @@ public class ForecastFragment extends Fragment implements
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private ForecastAdapter mForecastAdapter;
     private CursorLoader mCursorLoader;
-    private Callback mCallbackListener;
+    private ForecastFragmentCallback mCallbackListener;
 
     public ForecastFragment() {
         // Required empty public constructor
@@ -69,9 +68,10 @@ public class ForecastFragment extends Fragment implements
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallbackListener = (ForecastFragment.Callback) context;
+            mCallbackListener = (ForecastFragment.ForecastFragmentCallback) context;
         } catch (ClassCastException e) {
-            Log.e(LOG_TAG, context.toString() + " must implement OnArticleSelectedListener", e);
+            Log.e(LOG_TAG, " MainActivity must implement ForecastFragmentCallback", e);
+            throw e;
         }
     }
 
@@ -125,15 +125,13 @@ public class ForecastFragment extends Fragment implements
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-
-                if (cursor != null) {
-                    String locationSetting = Utility.getPreferredLocation(getActivity());
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
-                            ));
-                    startActivity(intent);
+                if (cursor == null) {
+                    return;
                 }
+                String locationSetting = Utility.getPreferredLocation(getActivity());
+                Uri uri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                        locationSetting, cursor.getLong(COL_WEATHER_DATE));
+                mCallbackListener.onItemSelected(uri);
             }
         });
 
@@ -221,7 +219,7 @@ public class ForecastFragment extends Fragment implements
      * implement. This mechanism allows activities to be notified of item
      * selections.
      */
-    public interface Callback {
+    public interface ForecastFragmentCallback {
         /**
          * DetailFragmentCallback for when an item has been selected.
          */

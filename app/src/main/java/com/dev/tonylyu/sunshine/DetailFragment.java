@@ -3,6 +3,7 @@ package com.dev.tonylyu.sunshine;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -63,11 +64,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
             WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
     };
-
+    public static String URI_KEY = "URI";
     private String mForecastStr;
     private ShareActionProvider mShareActionProvider;
     private CursorLoader mCursorLoader;
-
+    private Uri mUri;
     private TextView mDay;
     private TextView mDate;
     private TextView mHighTemp;
@@ -87,6 +88,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
         if (BuildConfig.DEBUG) {
             Log.d(LOG_TAG, "onCreateView");
+        }
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mUri = arguments.getParcelable(URI_KEY);
         }
 
         setHasOptionsMenu(true);
@@ -163,17 +169,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (BuildConfig.DEBUG) {
-            Log.d(LOG_TAG, "onCreateLoader");
+            Log.v(LOG_TAG, "onCreateLoader");
         }
 
-        Intent intent = getActivity().getIntent();
-        if (null == intent || null == intent.getData()) {
+        if (mUri == null) {
+            Log.d(LOG_TAG, " mUri is null", new Exception());
             return null;
         }
 
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         mCursorLoader = new CursorLoader(getContext(),
-                intent.getData(),
+                mUri,
                 FORECAST_COLUMNS,
                 null,
                 null,
@@ -245,4 +251,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
     }
+
+    public void onLocationChanged(String location) {
+        Uri uri = mUri;
+        if (uri != null) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(location,
+                    date
+            );
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        }
+    }
+
+
 }
