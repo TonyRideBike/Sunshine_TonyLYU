@@ -173,7 +173,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
         if (mUri == null) {
-            Log.d(LOG_TAG, " mUri is null", new Exception());
+            Log.d(LOG_TAG, " mUri is null");
             return null;
         }
 

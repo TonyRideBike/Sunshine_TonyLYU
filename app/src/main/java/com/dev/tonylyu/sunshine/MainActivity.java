@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements ForecastFragment.ForecastFragmentCallback {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -31,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
 
         if (findViewById(R.id.weather_detail_container) != null) {
             detailFragment = new DetailFragment();
-
-
             mTwoPane = true;
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction().replace(
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
         super.onResume();
 
         String location = Utility.getPreferredLocation(this);
-        if (mLocation != location && location != null) {
+        if (!Objects.equals(mLocation, location) && location != null) {
             if (forecastFragment != null) {
                 forecastFragment.onLocationChanged();
             }
