@@ -56,6 +56,11 @@ public class ForecastFragment extends Fragment implements
             WeatherContract.LocationEntry.COLUMN_COORD_LONG
     };
     private final String LOG_TAG = ForecastFragment.class.getSimpleName();
+
+    private final String SELECTED_POSITION = "selected_position";
+    private int mPosistion = ListView.INVALID_POSITION;
+    private ListView mListview;
+
     private ForecastAdapter mForecastAdapter;
     private CursorLoader mCursorLoader;
     private ForecastFragmentCallback mCallbackListener;
@@ -109,21 +114,25 @@ public class ForecastFragment extends Fragment implements
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.list_view_forecast);
-        listView.setAdapter(mForecastAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListview = (ListView) rootView.findViewById(R.id.list_view_forecast);
+        mListview.setAdapter(mForecastAdapter);
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
+                if (BuildConfig.DEBUG) {
+                    Log.d(LOG_TAG, "forecast list item onClick: number " + Integer.toString(position));
+                }
+
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor == null) {
                     return;
@@ -132,10 +141,27 @@ public class ForecastFragment extends Fragment implements
                 Uri uri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                         locationSetting, cursor.getLong(COL_WEATHER_DATE));
                 mCallbackListener.onItemSelected(uri);
+                mPosistion = position;
             }
         });
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_POSITION)) {
+            mPosistion = savedInstanceState.getInt(SELECTED_POSITION);
+        }
+
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, "onSaveInstanceState");
+        }
+
+        if (mPosistion != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_POSITION, mPosistion);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     private void updateWeather() {
@@ -195,6 +221,10 @@ public class ForecastFragment extends Fragment implements
             Log.d(LOG_TAG, "onLoadFinished");
         }
         mForecastAdapter.swapCursor(data);
+
+        if (mPosistion != ListView.INVALID_POSITION) {
+            mListview.smoothScrollToPosition(mPosistion);
+        }
     }
 
     @Override
@@ -219,7 +249,7 @@ public class ForecastFragment extends Fragment implements
      * implement. This mechanism allows activities to be notified of item
      * selections.
      */
-    public interface ForecastFragmentCallback {
+    interface ForecastFragmentCallback {
         /**
          * DetailFragmentCallback for when an item has been selected.
          */

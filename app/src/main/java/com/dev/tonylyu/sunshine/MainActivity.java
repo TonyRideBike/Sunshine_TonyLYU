@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     @Override
     public void onItemSelected(Uri dateUri) {
         if (BuildConfig.DEBUG) {
-            Log.d(LOG_TAG, "onItemSelected", new Exception());
+            Log.d(LOG_TAG, "onItemSelected");
         }
 
         if (mTwoPane) {
