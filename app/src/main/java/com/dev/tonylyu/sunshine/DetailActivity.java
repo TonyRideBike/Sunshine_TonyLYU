@@ -39,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
             detailFragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.weather_detail_container, detailFragment)
+                    .add(R.id.container, detailFragment)
                     .commit();
         }
     }
